@@ -1,11 +1,3 @@
-import datetime
-import json
-
-import bcrypt
-import jwt
-import requests
-import xmltodict
-from bs4 import BeautifulSoup
 from flask import Flask, render_template, request, jsonify, redirect
 from pymongo import MongoClient
 
