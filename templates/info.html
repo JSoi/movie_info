@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
+
+    <title>로그인</title>
+
+    <style>
+        * {
+            font-family: 'Gowun Dodum', sans-serif;
+        }
+
+        .card {
+            width: 300px;
+            margin: 20px 20px 20px 20px;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mypic {
+            width: 100%;
+            height: 300px;
+
+            background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://miro.medium.com/max/1400/1*0yBDbGpdgoLq-Ne5ceyidQ.jpeg');
+            background-position: center;
+            background-size: cover;
+
+            color: white;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mypic > h1 {
+            font-size: 30px;
+        }
+
+        .mybox {
+            width: 95%;
+            max-width: 700px;
+            padding: 20px;
+            box-shadow: 0px 0px 10px 0px lightslategray;
+            margin: 20px auto;
+        }
+
+        .mybucket {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .mybucket > input {
+            width: 70%;
+        }
+
+        .mybox > li {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+
+            margin-bottom: 10px;
+            min-height: 48px;
+        }
+
+        .mybox > li > h2 {
+            max-width: 75%;
+            font-size: 20px;
+            font-weight: 500;
+            margin-right: auto;
+            margin-bottom: 0px;
+        }
+
+        .mybox > li > h2.done {
+            text-decoration: line-through
+        }
+
+        .many-cards {
+            width: 40%;
+            max-width: 900px;
+            width: 30%;
+            height: 100%;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .bucketList {
+            margin: 10px auto auto auto;
+            width: 70%;
+            max-width: 1000px;
+            padding: 20px;
+        }
+
+        .two-things {
+            width: 100%;
+            margin: 10px auto auto auto;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .all-cards {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .chart-class {
+            margin: 10px auto auto auto;
+            width: 40%;
+            max-width: 1000px;
+            padding: 20px;
+        }
+    </style>
+</head>
+<script>
+    $(document).ready(function () {
+        showMelon()
+        showBucket()
+        showCovid()
+        showMise()
+    });
+
+    function showCovid() {
+
+    }
+
+    function showMise() {
+
+    }
+
+    function showMelon() {
+
+    }
+
+    function showBucket() {
+
+    }
+
+    function done_bucket(num) {
+
+    }
+
+    function undone_bucket(num) {
+
+    }
+
+    function save_bucket() {
+    }
+
+</script>
+<body>
+<div class="mypic">
+    <h1>To Do & Info</h1>
+</div>
+<div class="all-cards">
+    <div class="two-things" ?>
+        <div class="bucketList">
+            <div class="mybox">
+                <div class="mybucket">
+                    <input id="bucket" class="form-control" type="text" placeholder="이루고 싶은 것을 입력하세요">
+                    <button onclick="save_bucket()" type="button" class="btn btn-outline-primary">기록하기</button>
+                </div>
+            </div>
+            <div class="mybox" id="bucket-list">
+
+            </div>
+        </div>
+        <div class="chart-class">
+            <div class="card" id='chart'>
+                <img src="/static/Melon_logo.png" class="card-img-top" alt="...">
+                <div class="card-body" id="chart-body">
+                    <h5 class="card-title"><b>Melon 음악 차트</b></h5>
+                    <p class="card-text">오늘의 음악 순위입니다</p>
+                </div>
+            </div>
+        </div>
+        <div class="many-cards">
+            <div class="card">
+                <img src="/static/mise.png" width="225" height="225" class="rounded float-start" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title"><b>미세먼지</b></h5>
+                    <p class="card-text">오늘 서울 중구의 미세 먼지는 <span id="mise"></span>입니다.</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="/static/covid.png" width="225" height="225" class="rounded float-start" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title"><b>코로나 상황</b></h5>
+                    <p class="card-text">오늘 대전의 코로나 확진자는 <span id="corona"></span>명 입니다.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
