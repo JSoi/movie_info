@@ -33,7 +33,7 @@
 
         .mypic {
             width: 100%;
-            height: 300px;
+            height: 160px;
 
             background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://miro.medium.com/max/1400/1*0yBDbGpdgoLq-Ne5ceyidQ.jpeg');
             background-position: center;
@@ -133,11 +133,13 @@
             max-width: 1000px;
             padding: 20px;
         }
+
     </style>
 </head>
+<body>
 <script>
     $(document).ready(function () {
-        showMelon()
+        showMovie()
         showBucket()
         showCovid()
         showMise()
@@ -151,8 +153,29 @@
 
     }
 
-    function showMelon() {
-
+    function showMovie() {
+        $('#ranking').empty()
+        $.ajax({
+            type: 'GET',
+            url: '/movie',
+            data: {},
+            success: function (response) {
+                console.log(response)
+                for (let i = 0; i < 10; i++) {
+                    let rank = response[i]['rank']
+                    let reserveRate = response[i]['reserveRate']
+                    let star = response[i]['star']
+                    let title = response[i]['title']
+                    let temp_html = `<div style="width: 18rem;">
+                                      <div class="card-body">
+                                        <h5 class="card-title"><span style="color:red">${rank}위)</span> ${title}</h5>
+                                        <p>평점 : ${star} 예매율 : ${reserveRate}</p>
+                                      </div>
+                                    </div>`
+                    $('#ranking').append(temp_html)
+                }
+            }
+        });
     }
 
     function showBucket() {
@@ -171,7 +194,6 @@
     }
 
 </script>
-<body>
 <div class="mypic">
     <h1>To Do & Info</h1>
 </div>
@@ -190,10 +212,11 @@
         </div>
         <div class="chart-class">
             <div class="card" id='chart'>
-                <img src="/static/Melon_logo.png" class="card-img-top" alt="...">
                 <div class="card-body" id="chart-body">
-                    <h5 class="card-title"><b>Melon 음악 차트</b></h5>
-                    <p class="card-text">오늘의 음악 순위입니다</p>
+                    <h5 class="card-title"><b>오늘의 영화 순위</b></h5>
+                    <p class="card-text">오늘의 영화 순위입니다</p>
+                </div>
+                <div  id="ranking" >
                 </div>
             </div>
         </div>
