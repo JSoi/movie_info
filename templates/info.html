@@ -104,7 +104,7 @@
             justify-content: center;
         }
 
-        .bucketList {
+        .bucket_area {
             margin: 10px auto auto auto;
             width: 70%;
             max-width: 1000px;
@@ -134,16 +134,55 @@
             padding: 20px;
         }
 
+        .culture-body {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: right;
+            margin: 10px;
+        }
+
+        .culture-button {
+            border: 0;
+            background-color: white;
+        }
+
+        .culture-img {
+            object-fit: cover;
+            width: 35px;
+            height: 35px;
+        }
+
+        .culture-card {
+            width: 383px;
+            border: 1px solid gray;
+
+        }
+
+        .sale-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .sale-info {
+            border: 1px solid gray;
+            width: 350px;
+            height: 200px;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
 <script>
     $(document).ready(function () {
         showMovie()
-        showBucket()
         showCovid()
         showMise()
         weather()
+        show_bucket()
     });
 
     function showCovid() {
@@ -179,8 +218,34 @@
         });
     }
 
-    function showBucket() {
 
+    function showculture() {
+        $('#sale-box').empty()
+        $.ajax({
+            type: "GET",
+            url: "/culture",
+            data: {gu_give: $('#specificSizeSelect option:checked').text()},
+            success: function (response) {
+                let rows = response
+                for (let i = 0; i < rows.length; i++) {
+                    let cinema = rows[i]['cinema']
+                    let sale = rows[i]['sale']
+                    let period = rows[i]['period']
+                    let day = rows[i]['day']
+                    let content = rows[i]['content']
+
+                    let temp_html = `<div class="sale-info">
+                                            <p>${cinema}</p>
+                                            <br>${sale}
+                                            <br>${period}
+                                            <br>${day}
+                                            <p>${content}</p>
+                                        </div>`
+                    $('#sale-box').append(temp_html)
+                }
+
+            }
+        });
     }
 
     function weather() {
@@ -196,28 +261,76 @@
         });
     }
 
-    function done_bucket(num) {
+    function show_bucket() {
+        $.ajax({
+            type: "GET",
+            url: "/bucket",
+            data: {},
+            success: function (response) {
 
-    }
+                let rows = response['buckets']
+                for (let i = 0; i < rows.length; i++) {
+                    let bucket = rows[i]['bucket']
+                    let num = rows[i]['num']
+                    let done = rows[i]['done']
 
-    function undone_bucket(num) {
+                    let temp_html = ``
+                    if (done == 0) {
+                        temp_html =
+                                `<li>
+                                        <h2>✅ ${bucket}</h2>
+                                        <button onClick="done_bucket(${num})" type="button" className="btn btn-outline-primary">완료!</button>
+                                    </li>`
+                    } else {
+                        temp_html = `<li>
+                                        <h2 class="done">✅${bucket}</h2>
+                                    </li>`
+                    }
+                    $('#bucket-list').append(temp_html)
 
+                }
+
+            }
+        });
     }
 
     function save_bucket() {
+        let bucket = $('#bucket').val()
+        $.ajax({
+            type: "POST",
+            url: "/bucket",
+            data: {bucket_give: bucket},
+            success: function (response) {
+                alert(response["msg"])
+                window.location.reload()
+            }
+        });
     }
 
+
+    function done_bucket(num) {
+
+        $.ajax({
+            type: "POST",
+            url: "/bucket/done",
+            data: {num_give: num},
+            success: function (response) {
+                alert(response["msg"])
+                window.location.reload()
+            }
+        });
+    }
 </script>
 <div class="mypic">
     <h1>To Do & Info</h1>
 </div>
 <div class="all-cards">
     <div class="two-things" ?>
-        <div class="bucketList">
+        <div class="bucket_area">
             <div class="mybox">
                 <div class="mybucket">
-                    <input id="bucket" class="form-control" type="text" placeholder="이루고 싶은 것을 입력하세요">
-                    <button onclick="save_bucket()" type="button" class="btn btn-outline-primary">기록하기</button>
+                    <input id="bucket" class="form-control" type="text" placeholder="To do">
+                    <button onclick="save_bucket()" type="button" class="btn btn-outline-primary">record</button>
                 </div>
             </div>
             <div class="mybox" id="bucket-list">
@@ -249,6 +362,48 @@
                     <img id="weatherimg"/>
                     <p id="temp"></p>
                     <p id="weather"></p>
+            <div class="culture-card">
+                <div>
+                    <img src="/static/culture.png" width="380" height="150">
+                </div>
+                <div class="culture-body">
+                    <div class="col-sm-5">
+                        <label class="visually-hidden" for="specificSizeSelect">Preference</label>
+                        <select class="form-select" id="specificSizeSelect">
+                            <option selected>지역선택</option>
+                            <option value="강남구">강남구</option>
+                            <option value="강동구">강동구</option>
+                            <option value="강북구">강북구</option>
+                            <option value="강서구">강서구</option>
+                            <option value="관악구">관악구</option>
+                            <option value="광진구">광진구</option>
+                            <option value="구로구">구로구</option>
+                            <option value="금천구">금천구</option>
+                            <option value="노원구">노원구</option>
+                            <option value="도봉구">도봉구</option>
+                            <option value="동대문구">동대문구</option>
+                            <option value="동작구">동작구</option>
+                            <option value="마포구">마포구</option>
+                            <option value="서대문구">서대문구</option>
+                            <option value="서초구">서초구</option>
+                            <option value="성동구">성동구</option>
+                            <option value="성북구">성북구</option>
+                            <option value="송파구">송파구</option>
+                            <option value="양천구">양천구</option>
+                            <option value="영등포구">영등포구</option>
+                            <option value="용산구">용산구</option>
+                            <option value="은평구">은평구</option>
+                            <option value="종로구">종로구</option>
+                            <option value="중구">중구</option>
+                            <option value="중랑구">중랑구</option>
+                        </select>
+                    </div>
+                    <button type="button" onclick="showculture()" class="culture-button"><img class="culture-img"
+                                                                                              src="/static/search.png"
+                                                                                              alt="..."></button>
+
+                </div>
+                <div id="sale-box" class="sale-box">
                 </div>
             </div>
         </div>
