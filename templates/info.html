@@ -104,7 +104,7 @@
             justify-content: center;
         }
 
-        .bucketList {
+        .bucket_area {
             margin: 10px auto auto auto;
             width: 70%;
             max-width: 1000px;
@@ -173,16 +173,15 @@
             height: 200px;
             margin-top: 10px;
         }
-
     </style>
 </head>
 <body>
 <script>
     $(document).ready(function () {
         showMovie()
-        showBucket()
         showCovid()
         showMise()
+        show_bucket()
     });
 
     function showCovid() {
@@ -218,61 +217,107 @@
         });
     }
 
-    function showBucket() {
-
-    }
-
-    function done_bucket(num) {
-
-    }
-
-    function undone_bucket(num) {
-
-    }
-
-    function save_bucket() {
-    }
 
     function showculture() {
         $('#sale-box').empty()
-            $.ajax({
-                type: "GET",
-                url: "/culture",
-                data: {gu_give: $('#specificSizeSelect option:checked').text()},
-                success: function (response) {
-                    let rows = response
-                    for(let i =0; i < rows.length; i++) {
-                        let cinema =rows[i]['cinema']
-                        let sale =rows[i]['sale']
-                        let period =rows[i]['period']
-                        let day =rows[i]['day']
-                        let content =rows[i]['content']
+        $.ajax({
+            type: "GET",
+            url: "/culture",
+            data: {gu_give: $('#specificSizeSelect option:checked').text()},
+            success: function (response) {
+                let rows = response
+                for (let i = 0; i < rows.length; i++) {
+                    let cinema = rows[i]['cinema']
+                    let sale = rows[i]['sale']
+                    let period = rows[i]['period']
+                    let day = rows[i]['day']
+                    let content = rows[i]['content']
 
-                        let temp_html = `<div class="sale-info">
+                    let temp_html = `<div class="sale-info">
                                             <p>${cinema}</p>
                                             <br>${sale}
                                             <br>${period}
                                             <br>${day}
                                             <p>${content}</p>
                                         </div>`
-                        $('#sale-box').append(temp_html)
+                    $('#sale-box').append(temp_html)
+                }
+
+            }
+        });
+    }
+
+
+    function show_bucket() {
+        $.ajax({
+            type: "GET",
+            url: "/bucket",
+            data: {},
+            success: function (response) {
+
+                let rows = response['buckets']
+                for (let i = 0; i < rows.length; i++) {
+                    let bucket = rows[i]['bucket']
+                    let num = rows[i]['num']
+                    let done = rows[i]['done']
+
+                    let temp_html = ``
+                    if (done == 0) {
+                        temp_html =
+                                `<li>
+                                        <h2>✅ ${bucket}</h2>
+                                        <button onClick="done_bucket(${num})" type="button" className="btn btn-outline-primary">완료!</button>
+                                    </li>`
+                    } else {
+                        temp_html = `<li>
+                                        <h2 class="done">✅${bucket}</h2>
+                                    </li>`
                     }
+                    $('#bucket-list').append(temp_html)
 
                 }
-            });
-        }
 
+            }
+        });
+    }
+
+    function save_bucket() {
+        let bucket = $('#bucket').val()
+        $.ajax({
+            type: "POST",
+            url: "/bucket",
+            data: {bucket_give: bucket},
+            success: function (response) {
+                alert(response["msg"])
+                window.location.reload()
+            }
+        });
+    }
+
+
+    function done_bucket(num) {
+
+        $.ajax({
+            type: "POST",
+            url: "/bucket/done",
+            data: {num_give: num},
+            success: function (response) {
+                alert(response["msg"])
+                window.location.reload()
+            }
+        });
+    }
 </script>
 <div class="mypic">
     <h1>To Do & Info</h1>
 </div>
 <div class="all-cards">
     <div class="two-things" ?>
-        <div class="bucketList">
+        <div class="bucket_area">
             <div class="mybox">
                 <div class="mybucket">
-                    <input id="bucket" class="form-control" type="text" placeholder="이루고 싶은 것을 입력하세요">
-                    <button onclick="save_bucket()" type="button" class="btn btn-outline-primary">기록하기</button>
+                    <input id="bucket" class="form-control" type="text" placeholder="To do">
+                    <button onclick="save_bucket()" type="button" class="btn btn-outline-primary">record</button>
                 </div>
             </div>
             <div class="mybox" id="bucket-list">
@@ -285,7 +330,7 @@
                     <h5 class="card-title"><b>오늘의 영화 순위</b></h5>
                     <p class="card-text">오늘의 영화 순위입니다</p>
                 </div>
-                <div  id="ranking" >
+                <div id="ranking">
                 </div>
             </div>
         </div>
@@ -304,7 +349,7 @@
                 </div>
                 <div class="culture-body">
                     <div class="col-sm-5">
-                    <label class="visually-hidden" for="specificSizeSelect">Preference</label>
+                        <label class="visually-hidden" for="specificSizeSelect">Preference</label>
                         <select class="form-select" id="specificSizeSelect">
                             <option selected>지역선택</option>
                             <option value="강남구">강남구</option>
@@ -334,13 +379,15 @@
                             <option value="중랑구">중랑구</option>
                         </select>
                     </div>
-                    <button type="button" onclick="showculture()" class="culture-button"><img class="culture-img" src="/static/search.png" alt="..."></button>
+                    <button type="button" onclick="showculture()" class="culture-button"><img class="culture-img"
+                                                                                              src="/static/search.png"
+                                                                                              alt="..."></button>
 
                 </div>
-                    <div id="sale-box" class="sale-box">
+                <div id="sale-box" class="sale-box">
 
-                    </div>
                 </div>
+            </div>
         </div>
     </div>
 </div>
