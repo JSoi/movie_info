@@ -17,7 +17,31 @@
     <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
 
     <title>로그인</title>
-
+    <script>
+        function login() {
+            let id = $("#floatingID").val()
+            let pw = $("#floatingPassword").val()
+            if(id==''||pw==''){
+                alert('ID P')
+            }
+            $.ajax({
+                type: "POST",
+                url: '/login',
+                data: {'id_give': id, 'password_give': pw},
+                success: function (response) {
+                    console.log(response);
+                    if (response['result'] == 'false') {
+                        console.log(response)
+                        $('#floatingPassword').val("")
+                        alert(response['msg'])
+                    } else {
+                        $.cookie('mytoken', response['access_token'], {path: '/'})
+                        window.location.replace("/main")
+                    }
+                }
+            });
+        }
+    </script>
     <style>
         * {
             font-family: 'Gowun Dodum', sans-serif;

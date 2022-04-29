@@ -143,6 +143,7 @@
         showBucket()
         showCovid()
         showMise()
+        weather()
     });
 
     function showCovid() {
@@ -182,6 +183,19 @@
 
     }
 
+    function weather() {
+        $.ajax({
+            type: 'GET',
+            url: '/weather',
+            data: {},
+            success: function (response) {
+                console.log(response)
+                $('#weather').text(response['weather'])
+                $('#temp').text(response['temperature'])
+            }
+        });
+    }
+
     function done_bucket(num) {
 
     }
@@ -216,7 +230,7 @@
                     <h5 class="card-title"><b>오늘의 영화 순위</b></h5>
                     <p class="card-text">오늘의 영화 순위입니다</p>
                 </div>
-                <div  id="ranking" >
+                <div id="ranking">
                 </div>
             </div>
         </div>
@@ -230,10 +244,11 @@
                 </div>
             </div>
             <div class="card">
-                <img src="/static/covid.png" width="225" height="225" class="rounded float-start" alt="...">
                 <div class="card-body">
-                    <h5 class="card-title"><b>코로나 상황</b></h5>
-                    <p class="card-text">오늘 대전의 코로나 확진자는 <span id="corona"></span>명 입니다.</p>
+                    <p>중구 을지로1가 날씨</p>
+                    <img id="weatherimg"/>
+                    <p id="temp"></p>
+                    <p id="weather"></p>
                 </div>
             </div>
         </div>
