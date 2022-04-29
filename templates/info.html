@@ -181,6 +181,7 @@
         showMovie()
         showCovid()
         showMise()
+        weather()
         show_bucket()
     });
 
@@ -247,6 +248,18 @@
         });
     }
 
+    function weather() {
+        $.ajax({
+            type: 'GET',
+            url: '/weather',
+            data: {},
+            success: function (response) {
+                console.log(response)
+                $('#weather').text(response['weather'])
+                $('#temp').text(response['temperature'])
+            }
+        });
+    }
 
     function show_bucket() {
         $.ajax({
@@ -343,6 +356,12 @@
                     <p class="card-text">오늘 서울 중구의 미세 먼지는 <span id="mise"></span>입니다.</p>
                 </div>
             </div>
+            <div class="card">
+                <div class="card-body">
+                    <p>중구 을지로1가 날씨</p>
+                    <img id="weatherimg"/>
+                    <p id="temp"></p>
+                    <p id="weather"></p>
             <div class="culture-card">
                 <div>
                     <img src="/static/culture.png" width="380" height="150">
@@ -385,7 +404,6 @@
 
                 </div>
                 <div id="sale-box" class="sale-box">
-
                 </div>
             </div>
         </div>

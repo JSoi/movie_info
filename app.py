@@ -108,5 +108,25 @@ def bucket_get():
     return jsonify({'buckets': bucket_list})
 
 
+@app.route('/weather', methods=["GET"])
+def weather_get():
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36'}
+    data = requests.get('https://weather.naver.com/today/09140104', headers=headers)
+    soup = BeautifulSoup(data.text, 'html.parser')
+    # content > div > div.section_center > div.card.card_today > div.today_weather > div.weather_area > div.weather_now > p > span.weather
+    factor = soup.select_one(
+        "#content > div > div.section_center > div.card.card_today > div.today_weather > div.weather_area > div.weather_now > p > span.weather").text
+    temp = soup.select_one(
+        "#content > div > div.section_center > div.card.card_today > div.today_weather > div.weather_area > div.weather_now > div > strong").text
+    tempStr = len(temp)
+    temperature = temp[6:tempStr]
+    # icon = soup.select_one("#content > div > div.section_center > div.card.card_today > div.today_weather > div.weather_area > div.weather_now > div > i").src
+    print(factor, temperature)
+
+    data = {"weather": factor, "temperature": temperature}
+    return jsonify(data)
+
+
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
